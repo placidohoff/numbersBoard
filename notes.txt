@@ -1,0 +1,60 @@
+
+ ..*Using let gameConfig fix the size of the game canvas.
+
+    				******
+One of the most important goals to accomplish when building a cross platform
+game is to make it look good no matter the device it's running on.
+For this reason, the first thing to do is try to cover the wider screen area possible
+while keeping the size ratio and make the game look pretty much the same on
+each device, no matter the resolution.
+It gets frustrating when you run a game – especially on a mobile device – and you
+see it does not cover the entire screen. It just makes the game look old and
+outdated.
+And obviously people want to play new and modern games.
+We need to change a bit game.js rewriting some code and adding a new function.
+
+function resizeGame(){
+    let canvas = document.querySelector("canvas");
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+    let windowRatio = windowWidth / windowHeight;
+    let gameRatio = game.config.width / game.config.height;
+    if(windowRatio < gameRatio){
+        canvas.style.width = windowWidth + 'px';
+        canvas.style.height = (windowWidth / gameRatio) + "px";
+    }else{
+        canvas.style.width = (windowHeight * gameRatio) + "px";
+        canvas.style.height = windowHeight + "px";
+    }
+}
+
+				******
+
+	-branch: Loading Images: The importance of storing all game
+customizable variables in a single place:
+
+Every game has a series of variables which define the essence of the game itself.
+In the making of 4096 game, for instance, we said we will be playing on a 4x4
+grid, which is a grid with 4 rows and 4 columns, and each tile on the grid is a
+200x200 pixels image with a 20 pixels spacing.
+We are going to refer to these numbers a lot of times in the making of the game,
+each time we will need to know the size of the board, or the size of a tile, and
+believe me, it will happen quite often.
+Rather than filling the source code with a series of “4”, “200”, and so on scattered
+here and there, it would be better to store these values somewhere safe and easy to
+access.
+
+ ..*We made a 'gameOptions' variable to the window.onLoad() within game.js:
+	tileSize: the size of each tile, in pixels.
+	tileSpacing: the spacing between two tiles, in pixels.
+	boardSize: another object which contains the amount of rows and columns to be
+	 added to the board. 
+
+ ..*This branch also makes use of 'psuedoscience'/calculations within gameConfig{} to make the images/squares render correctly on all screen sizes. Makes the tiles responsive.
+
+
+            **********
+ ..*Game-Tiles-As-A-Sprite*..
+  ..*We load the large game sprite but set the visibility to false.
+  ..*We loop through each square on our game board and assign it a tile/value from our large gamesprite. (game.js>playGame>create()).
+    ..*Makes use of this.boardArray = []

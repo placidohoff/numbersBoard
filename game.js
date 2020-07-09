@@ -44,6 +44,10 @@ class bootGame extends Phaser.Scene{
     }
     preload(){
         this.load.image("emptytile", "./assets/sprites/emptytile.png");
+        this.load.spritesheet("tiles", "assets/sprites/tiles.png", {
+            frameWidth: gameOptions.tileSize,
+            frameHeight: gameOptions.tileSize
+        });
     }
     create(){
         console.log("game is booting...");
@@ -56,13 +60,19 @@ class playGame extends Phaser.Scene{
         super("PlayGame");
     }
     create(){
-        //console.log("this is the awesome game");
-        //this.add.image(100, 100, "emptytile")
-        for(let i = 0; i < 4; i++){
+        this.boardArray = [];
+        for(let i = 0; i < gameOptions.boardSize.rows; i++){
+            this.boardArray[i] = [];
             for(let j = 0; j < 4; j++ ){
                 let tilePosition = this.getTilePosition(i, j);
+                //Adding the empty tile gives the sprite from the sheet a shadow:
                 this.add.image(tilePosition.x, tilePosition.y, "emptytile");
-                //this.add.image(120 + j * 220, 120 + i * 220, "emptytile");
+                let tile = this.add.sprite(tilePosition.x, tilePosition.y, "tiles", 0);
+                tile.visible = true;
+                this.boardArray[i][j] = {
+                    tileValue: 0,
+                    tileSprite: tile
+                }
             }
         }
     }
