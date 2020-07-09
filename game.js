@@ -6,7 +6,8 @@ window.onload = function(){
         boardSize: {
             rows: 4,
             cols: 4
-        }
+        },
+        tweenSpeed: 2000
     }
     gameConfig = {
         width: gameOptions.boardSize.cols * (gameOptions.tileSize + gameOptions.tileSpacing) + gameOptions.tileSpacing,
@@ -60,6 +61,7 @@ class playGame extends Phaser.Scene{
         super("PlayGame");
     }
     create(){
+        this.canMove = false;
         this.boardArray = [];
         for(let i = 0; i < gameOptions.boardSize.rows; i++){
             this.boardArray[i] = [];
@@ -102,6 +104,19 @@ class playGame extends Phaser.Scene{
             this.boardArray[chosenTile.row][chosenTile.col].tileValue = 1;
             this.boardArray[chosenTile.row][chosenTile.col].tileSprite.visible = true;
             this.boardArray[chosenTile.row][chosenTile.col].tileSprite.setFrame(0); 
+            //Tween animation:
+            this.boardArray[chosenTile.row][chosenTile.col].tileSprite.alpha = 0;
+            this.tweens.add({
+                targets: [this.boardArray[chosenTile.row][chosenTile.col].tileSprite],
+                alpha: 1,
+                duration: gameOptions.tweenSpeed,
+                //Tween completion indicator:
+                callbackScope: this,
+                onComplete: function(){
+                    this.canMove = true;
+                    console.log("Tween Completed");
+                }
+            });
 
         }
     }

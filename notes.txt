@@ -65,3 +65,8 @@ access.
  ..*The game plays as the board is empty but for two tiles with a 'Two' value. Each turn when we move, a new 'Two' tile will appear on a previously empty tile.
  ..*In this branch we will code this logic.
  ..*We achieve this via PlayGame.onCreate() -> this.addTile(). We call that function twice, what it does is it goes through our boardArray at random and if the board is empty, it will make visible a tile with a 'Two' value.
+
+            *************
+        Using-Tweens-Animate-Tiles
+..*Set tween speed set up in gameOptions{}..*The animation we will be showcasing is when the tile appears the .alpha will go from 0 to 1 in 2000 milliseconds.
+..*We also set a "this.canMove" bool set to false which becomes true once the tween is complete.
