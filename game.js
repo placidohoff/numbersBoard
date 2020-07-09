@@ -1,9 +1,17 @@
-let game;
+let game, gameOptions, gameConfig;
 window.onload = function(){
-    let gameConfig = {
-        width: 480,
-        height: 640,
-        backgroundColor: 0xff0000,
+    gameOptions = {
+        tileSize: 200,
+        tileSpacing: 20,
+        boardSize: {
+            rows: 4,
+            cols: 4
+        }
+    }
+    gameConfig = {
+        width: gameOptions.boardSize.cols * (gameOptions.tileSize + gameOptions.tileSpacing) + gameOptions.tileSpacing,
+        height: gameOptions.boardSize.rows * (gameOptions.tileSize + gameOptions.tileSpacing) + gameOptions.tileSpacing,
+        backgroundColor: 0xecf0f1,
         scene: [bootGame, playGame]
     }
     game = new Phaser.Game(gameConfig);
@@ -30,21 +38,38 @@ function resizeGame(){
     }
 }
 
-class playGame extends Phaser.Scene{
-    constructor(){
-        super("PlayGame");
-    }
-    create(){
-        console.log("this is the awesome game");
-    }
-}
-
 class bootGame extends Phaser.Scene{
     constructor(){
         super("BootGame");
+    }
+    preload(){
+        this.load.image("emptytile", "./assets/sprites/emptytile.png");
     }
     create(){
         console.log("game is booting...");
         this.scene.start("PlayGame")
     }
 }
+
+class playGame extends Phaser.Scene{
+    constructor(){
+        super("PlayGame");
+    }
+    create(){
+        //console.log("this is the awesome game");
+        //this.add.image(100, 100, "emptytile")
+        for(let i = 0; i < 4; i++){
+            for(let j = 0; j < 4; j++ ){
+                let tilePosition = this.getTilePosition(i, j);
+                this.add.image(tilePosition.x, tilePosition.y, "emptytile");
+                //this.add.image(120 + j * 220, 120 + i * 220, "emptytile");
+            }
+        }
+    }
+    getTilePosition(row, col){
+        let posX = gameOptions.tileSpacing * (col + 1) + gameOptions.tileSize * (col + 0.5);
+        let posY = gameOptions.tileSpacing * (row + 1) + gameOptions.tileSize * (row + 0.5);
+        return new Phaser.Geom.Point(posX, posY);
+    }
+}
+
