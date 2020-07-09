@@ -58,3 +58,10 @@ access.
   ..*We load the large game sprite but set the visibility to false.
   ..*We loop through each square on our game board and assign it a tile/value from our large gamesprite. (game.js>playGame>create()).
     ..*Makes use of this.boardArray = []
+
+
+            ***********
+..*Creating-New-Tiles-On-Empty-Spots*..
+ ..*The game plays as the board is empty but for two tiles with a 'Two' value. Each turn when we move, a new 'Two' tile will appear on a previously empty tile.
+ ..*In this branch we will code this logic.
+ ..*We achieve this via PlayGame.onCreate() -> this.addTile(). We call that function twice, what it does is it goes through our boardArray at random and if the board is empty, it will make visible a tile with a 'Two' value.

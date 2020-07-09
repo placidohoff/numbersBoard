@@ -68,18 +68,42 @@ class playGame extends Phaser.Scene{
                 //Adding the empty tile gives the sprite from the sheet a shadow:
                 this.add.image(tilePosition.x, tilePosition.y, "emptytile");
                 let tile = this.add.sprite(tilePosition.x, tilePosition.y, "tiles", 0);
-                tile.visible = true;
+                tile.visible = false;
                 this.boardArray[i][j] = {
                     tileValue: 0,
                     tileSprite: tile
                 }
             }
         }
+
+        this.addTile();
+        this.addTile();
     }
     getTilePosition(row, col){
         let posX = gameOptions.tileSpacing * (col + 1) + gameOptions.tileSize * (col + 0.5);
         let posY = gameOptions.tileSpacing * (row + 1) + gameOptions.tileSize * (row + 0.5);
         return new Phaser.Geom.Point(posX, posY);
+    }
+    addTile(){
+        let emptyTiles = [];
+        for(let i = 0; i < gameOptions.boardSize.rows; i++){
+            for(let j = 0; j < gameOptions.boardSize.cols; j++){
+                if(this.boardArray[i][j].tileValue == 0){
+                    emptyTiles.push({
+                        row: i,
+                        col: j
+                    })
+                }
+            }
+        }
+        //If we actually have empty tiles on the board:
+        if(emptyTiles.length > 0){
+            let chosenTile = Phaser.Utils.Array.GetRandom(emptyTiles);
+            this.boardArray[chosenTile.row][chosenTile.col].tileValue = 1;
+            this.boardArray[chosenTile.row][chosenTile.col].tileSprite.visible = true;
+            this.boardArray[chosenTile.row][chosenTile.col].tileSprite.setFrame(0); 
+
+        }
     }
 }
 
