@@ -70,3 +70,47 @@ access.
         Using-Tweens-Animate-Tiles
 ..*Set tween speed set up in gameOptions{}..*The animation we will be showcasing is when the tile appears the .alpha will go from 0 to 1 in 2000 milliseconds.
 ..*We also set a "this.canMove" bool set to false which becomes true once the tween is complete.
+
+            *************
+            Player-Input
+..*Player input will be with keyboard, mouse or fingers. This is done with -> [
+    this.input.keyboard.on("keydown", this.handleKey, this);
+    this.input.on("pointerup", this.handleSwipe, this);
+]
+
+..*The code within handleSwipe(e) is goTo code for swipe management that I will need to master how to use.
+
+.."No matter the size of the canvas, you will be always working with game size.
+This saves us from a lot of headache since we don't have to bear with screen
+resolutions or window sizes, we just have to set a game size and that's all."
+
+            Processing Pointer Input
+..*First thing with processing swipe is we first first determine that the input is actually indeed a swipe from the user. The ways to determine this are:
+    1. Duration: distinguish from tap
+    2. Distance Covered: distinguish from press down.
+    3. Direction: Only allow for horizontal or vertical. No diagonal or circles.
+
+..*Vector Magnitude and Normilization come into play*..
+
+..*Vector Magnitude: Each input move is considered a 'vector'. That is each one has {angle, length}.
+    ..All vectors have a horizontal and vertical component which can be calculated by multiplying the magnitude by the cosine and the sine of the direction.
+
+..*Vectors can be "normalized", this happens when we take a vector of any length and keeping it in the same direction, we change its length to equal 1, aka, a "unit vector".
+
+
+            Rules for Our handleSwipe
+..*We will add these new values to our gameOptions to check for these three conditions for a player input to be considered a swipe:
+    ..1. Duration: A swipe can't last more than one second.
+    ..2. Distance: Must be at least 20px.
+    ..3. Direction: Only the Cardinal Directions. However, we cannot expect players to move these directions with surgeon precision. So we will give some wiggle room in the form of 'sectors'.
+        ..**If we split a 360degree circle into '12 sectors', each sector has a 30degrees angle. Lets assign each sector a swipe direction.
+        ..If we 'normalize' the swipe vector, the horizontal movement ranges from cos(0) to cos(30). That is 1 to 0.866 ??
+        ..Normalizing the vertical movement, up and down ranges from sin(90) to sin(60), that is 1 to 0.866 ??
+        ..So they say we can approximate there is a valid swipe when the bigger component of the normalized swipe vectore measures at least 0.85. 
+            ..*!*All this to determine the 'valid Directions'
+
+    ..*We will turn this all into code logic first in gameOptions{} then within handleSwipe().
+
+     ..*!*All this explained on PG. 83
+
+
